@@ -30,20 +30,21 @@ namespace WiseMonkeES.Mover
             EndAction();
         }
         
-        public static void Around(Transform transform, Vector3 target, float degree, float seconds)
+        public static void Around(Transform transform, Vector3 targetPos, float degree, float seconds)
         {
-                Instance.StartCoroutine(RotateAround(transform, target, degree, seconds));
+                Instance.StartCoroutine(RotateAround(transform, targetPos, degree, Vector3.forward, seconds));
         }
         
-        private static IEnumerator RotateAround(Transform transform, Vector3 target, float degree, float seconds)
+        public static void Around(Transform transform, Vector3 targetPos, float degree,Vector3 axis, float seconds)
         {
-            //rotate around target using transform.rotateAround and lerp
+            Instance.StartCoroutine(RotateAround(transform, targetPos, degree, axis, seconds));
+        }
+        
+        private static IEnumerator RotateAround(Transform transform, Vector3 target, float degree, Vector3 axis, float seconds)
+        {
             StartAction();
             float elapsedTime = 0;
 
-            Vector3 axis = Vector3.forward;
-
-            
             while (elapsedTime < seconds)
             {
                 transform.RotateAround(target, axis, degree * Time.deltaTime);
