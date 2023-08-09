@@ -12,6 +12,11 @@ namespace WiseMonkeES.Mover
             Instance.StartCoroutine(MoveTo(transform, targetPosition, time));
         }
         
+        public static void To(RectTransform rectTransform, Vector3 targetPosition, float time)
+        {
+            Instance.StartCoroutine(MoveUiTo(rectTransform, targetPosition, time));
+        }
+        
         private static IEnumerator MoveTo(Transform transform, Vector3 position, float timeToMove)
         {
             StartAction();
@@ -21,6 +26,20 @@ namespace WiseMonkeES.Mover
             {
                 t += Time.deltaTime / timeToMove;
                 transform.position = Vector3.Lerp(currentPos, position, t);
+                yield return null;
+            }
+            EndAction();
+        }
+
+        private static IEnumerator MoveUiTo(RectTransform rectTransform, Vector3 position, float timeToMove)
+        {
+            StartAction();
+            var currentPos = rectTransform.anchoredPosition;
+            var t = 0f;
+            while(t < 1)
+            {
+                t += Time.deltaTime / timeToMove;
+                rectTransform.anchoredPosition = Vector3.Lerp(currentPos, position, t);
                 yield return null;
             }
             EndAction();

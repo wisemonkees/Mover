@@ -16,5 +16,8 @@
     "name": "Wise Monke Entertainment Studio",
     "email": "wisemonkees@gmail.com",
     "url": "https://wisemonkees.net"
+  },
+  "dependencies": {
+    "com.wisemonkees.util":"0.5.0"
   }
 }
