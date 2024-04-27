@@ -5,10 +5,11 @@ namespace WiseMonkeES.Mover
 {
     public class Rotate: Mover
     {
-        
-        public static void To(Transform transform, Vector3 target, float seconds, bool isLocal = false)
+        private static bool _interrupted = false;
+        private static bool _paused = false;
+        public static Coroutine To(Transform transform, Vector3 target, float seconds, bool isLocal = false)
         {
-            Instance.StartCoroutine(RotateTo(transform, target, seconds,isLocal));
+            return Instance.StartCoroutine(RotateTo(transform, target, seconds,isLocal));
         }
 
         private static IEnumerator RotateTo(Transform transform, Vector3 target, float seconds, bool isLocal)
@@ -20,6 +21,17 @@ namespace WiseMonkeES.Mover
 
             while (elapsedTime < seconds)
             {
+                if (_interrupted)
+                {
+                    _interrupted = false;
+                    EndAction();
+                    yield break;
+                }
+                if (_paused)
+                {
+                    yield return null;
+                    continue;
+                }
                 if(isLocal)
                     transform.localRotation = Quaternion.Lerp(startingRotation, targetRotation, (elapsedTime / seconds));
                 else
@@ -35,6 +47,21 @@ namespace WiseMonkeES.Mover
                 Instance.StartCoroutine(RotateAround(transform, targetPos, degree, Vector3.forward, seconds));
         }
         
+        public static void Interrupt()
+        {
+            _interrupted = true;
+        }
+
+        public static void Pause()
+        {
+            _paused = true;
+        }
+
+        public static void Resume()
+        {
+            _paused = false;
+        }
+
         public static void Around(Transform transform, Vector3 targetPos, float degree,Vector3 axis, float seconds)
         {
             Instance.StartCoroutine(RotateAround(transform, targetPos, degree, axis, seconds));
