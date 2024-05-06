@@ -6,7 +6,7 @@ namespace WiseMonkeES.Mover
     {
         //Singleton
         private static Mover _instance;
-        protected static Mover Instance
+        public static Mover Instance
         {
             get
             {
