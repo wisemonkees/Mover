@@ -7,9 +7,7 @@ namespace WiseMonkeES.Mover
     {
         public static void To(Transform transform, Vector3 targetPosition, float time, bool isLocal = false)
         {
-            if(isLocal)
-                targetPosition += transform.position;
-            Instance.StartCoroutine(MoveTo(transform, targetPosition, time));
+            Instance.StartCoroutine(MoveTo(transform, targetPosition, time, isLocal));
         }
         
         public static void To(RectTransform rectTransform, Vector3 targetPosition, float time)
@@ -17,16 +15,30 @@ namespace WiseMonkeES.Mover
             Instance.StartCoroutine(MoveUiTo(rectTransform, targetPosition, time));
         }
         
-        private static IEnumerator MoveTo(Transform transform, Vector3 position, float timeToMove)
+        private static IEnumerator MoveTo(Transform transform, Vector3 position, float timeToMove, bool isLocal)
         {
             StartAction();
-            var currentPos = transform.position;
-            var t = 0f;
-            while(t < 1)
+            if(!isLocal)
             {
-                t += Time.deltaTime / timeToMove;
-                transform.position = Vector3.Lerp(currentPos, position, t);
-                yield return null;
+                var currentPos = transform.position;
+                var t = 0f;
+                while (t < 1)
+                {
+                    t += Time.deltaTime / timeToMove;
+                    transform.position = Vector3.Lerp(currentPos, position, t);
+                    yield return null;
+                }
+            }
+            else
+            {
+                var currentPos = transform.localPosition;
+                var t = 0f;
+                while (t < 1)
+                {
+                    t += Time.deltaTime / timeToMove;
+                    transform.localPosition = Vector3.Lerp(currentPos, position, t);
+                    yield return null;
+                }
             }
             EndAction();
         }
@@ -69,6 +81,7 @@ namespace WiseMonkeES.Mover
                 yield return null;
             }
             EndAction();
+
         }
         
         
