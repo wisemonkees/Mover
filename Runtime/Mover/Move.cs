@@ -5,14 +5,14 @@ namespace WiseMonkeES.Mover
 {
     public class Move: Mover
     {
-        public static void To(Transform transform, Vector3 targetPosition, float time, bool isLocal = false)
+        public static Coroutine To(Transform transform, Vector3 targetPosition, float time, bool isLocal = false)
         {
-            Instance.StartCoroutine(MoveTo(transform, targetPosition, time, isLocal));
+            return Instance.StartCoroutine(MoveTo(transform, targetPosition, time, isLocal));
         }
         
-        public static void To(RectTransform rectTransform, Vector3 targetPosition, float time)
+        public static Coroutine To(RectTransform rectTransform, Vector3 targetPosition, float time)
         {
-            Instance.StartCoroutine(MoveUiTo(rectTransform, targetPosition, time));
+            return Instance.StartCoroutine(MoveUiTo(rectTransform, targetPosition, time));
         }
         
         private static IEnumerator MoveTo(Transform transform, Vector3 position, float timeToMove, bool isLocal)
